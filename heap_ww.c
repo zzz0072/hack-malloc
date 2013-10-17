@@ -137,7 +137,7 @@ static size_t xFreeBytesRemaining = configTOTAL_HEAP_SIZE;
         /* has a larger size than the block we are inserting. */        \
         for ( pxIterator = &xStartAddr;                                 \
               pxIterator->pxNextAddrBlock != &xEnd &&                   \
-                  (int) pxIterator->pxNextAddrBlock < (int) pxBlockToInsert; \
+                  (long int) pxIterator->pxNextAddrBlock < (long int) pxBlockToInsert; \
               pxIterator = pxIterator->pxNextAddrBlock )                \
         {                                                               \
             /* There is nothing to do here - just iterate to the correct position. */ \
@@ -227,7 +227,7 @@ void *pvPortMalloc( size_t xWantedSize )
                 pvReturn = ( void * ) ( ( ( unsigned char * ) pxPreviousSizeBlock->pxNextSizeBlock ) +
                                         heapSTRUCT_SIZE );
 
-                while ((int) pxPreviousAddrBlock->pxNextAddrBlock < (int) pxBlock)
+                while ((long int) pxPreviousAddrBlock->pxNextAddrBlock < (long int) pxBlock)
                     pxPreviousAddrBlock = pxPreviousAddrBlock->pxNextAddrBlock;
 
                 /* This block is being returned for use so must be taken our of the
@@ -316,7 +316,7 @@ void vPortFree( void *pv )
             previous = &xStartAddr;
             while (previous->pxNextAddrBlock != &xEnd) {
                 successor = previous->pxNextAddrBlock;
-                if ((unsigned int) successor >= (unsigned int) pxLink)
+                if ((long int) successor >= (long int) pxLink)
                     break;
                 previousPrevious = previous;
                 previous = successor;
